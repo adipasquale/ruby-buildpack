@@ -88,6 +88,7 @@ class LanguagePack::Ruby < LanguagePack::Base
       bundle_path: "vendor/bundle",
       bundle_default_without: "development:test"
     )
+    config_detect
     allow_git do
       install_bundler_in_app(slug_vendor_base)
       load_bundler_cache
@@ -97,7 +98,6 @@ class LanguagePack::Ruby < LanguagePack::Base
       install_binaries
       run_assets_precompile_rake_task
     end
-    config_detect
     best_practice_warnings
     warn_outdated_ruby
     setup_profiled(ruby_layer_path: "$HOME", gem_layer_path: "$HOME") # $HOME is set to /app at run time
