@@ -73,7 +73,7 @@ WARNING
     log("assets_precompile") do
       puts "in assets precompile!!"
       puts "---"
-      puts Dir.glob("public/assets/{.sprockets-manifest-*.json,manifest-*.json,manifest-*.js}", File::FNM_DOTMATCH).to_a
+      puts Dir.glob("public/assets/*", File::FNM_DOTMATCH).to_a
       puts "---"
 
       unless assets_enabled?
