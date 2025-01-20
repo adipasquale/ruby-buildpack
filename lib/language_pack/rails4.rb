@@ -59,9 +59,24 @@ WARNING
     FileUtils.remove_dir(default_assets_cache)
   end
 
+  def config_detect
+    super
+    @assets_enabled = @rails_runner.detect("assets.enabled")
+  end
+
+  def assets_enabled?
+    return true unless @assets_enabled.success? # default is true
+    @assets_enabled.did_match?("true")
+  end
+
   def run_assets_precompile_rake_task
     log("assets_precompile") do
-      if Dir.glob("public/assets/{.sprockets-manifest-*.json,manifest-*.json}", File::FNM_DOTMATCH).any?
+      unless assets_enabled?
+        puts "assets are disabled in Rails config, skipping precompile"
+        return true
+      end
+
+      if Dir.glob("public/assets/{.sprockets-manifest-*.json,manifest-*.json,manifest-*.js}", File::FNM_DOTMATCH).any?
         puts "Detected manifest file, assuming assets were compiled locally"
         return true
       end
